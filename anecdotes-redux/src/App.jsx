@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { selectAnecdotesSortedByVotes } from './reducers/anecdoteReducer'
+import { createAnecdote, selectAnecdotesSortedByVotes } from './reducers/anecdoteReducer'; // Import the action creator
 
 
 const App = () => {
@@ -19,12 +19,7 @@ const App = () => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    dispatch({
-      type: 'new_anecdote',
-      payload: {
-        anecdote: content
-      }
-    })
+    dispatch(createAnecdote(content))
   }
   
   return (

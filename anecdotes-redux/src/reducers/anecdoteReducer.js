@@ -33,19 +33,35 @@ const reducer = (state = initialState, action) => {
       )
 
       case 'new_anecdote':
-        const newAnecdote = {
-          content: action.payload.anecdote,
-          id: getId(),
-          votes: 0
-        };
-        return [...state, newAnecdote];
+        return [...state, action.payload];
       
     default:
-      return state.sort((a,b) => b.votes - a.votes);
+      return state
     }
 }
 
-export default reducer
 export const selectAnecdotesSortedByVotes = (state) => {
   return [...state.slice().sort((a, b) => b.votes - a.votes)];
 };
+
+export const vote = (id) => {
+  return({
+    type: 'vote',
+    payload: {
+      id: id
+    }
+  })
+}
+
+export const createAnecdote = (anecdote) => {
+  return({
+    type: 'new_anecdote',
+    payload: {
+      content: anecdote,
+      id: getId(),
+      votes: 0
+    }
+  })
+}
+
+export default reducer
