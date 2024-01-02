@@ -41,10 +41,10 @@ const reducer = (state = initialState, action) => {
 }
 
 export const selectAnecdotesSortedByVotes = (state) => {
-  return [...state.slice().sort((a, b) => b.votes - a.votes)];
+  return [...state.anecdotes.slice().sort((a, b) => b.votes - a.votes)];
 };
 
-export const vote = (id) => {
+export const voteAction = (id) => {
   return({
     type: 'vote',
     payload: {
