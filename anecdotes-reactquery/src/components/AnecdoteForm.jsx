@@ -23,9 +23,7 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     newAnecdoteMutation.mutate({ content, votes: 0 });
-    if (content.length >= 5) {
-      showNotification(`anecdote ${content} is created`);
-    }
+    showNotification(`anecdote ${content} is created`)
 }
 
   return (
