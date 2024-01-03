@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { selectAnecdotesSortedByVotes, voteAction } from '../reducers/anecdoteReducer'; 
+import { selectAnecdotesSortedByVotes, updateVote } from '../reducers/anecdoteReducer'; 
 import { setMessage} from "../reducers/notificationReducer"; 
 
 
@@ -15,15 +15,15 @@ const AnecdoteList = () => {
     }
   
     const filteredAnecdotes = anecdotes.filter(anecdote =>
-      anecdote.content.toLowerCase().includes(filterWord)
+      anecdote.content && anecdote.content.toLowerCase().includes(filterWord)
     );
-  
+    
     const dispatch = useDispatch();
   
     const vote = id => {
       const votedAnecdote = filteredAnecdotes.find(anecdote => anecdote.id === id);
       if (votedAnecdote) {
-        dispatch(voteAction(id));
+        dispatch(updateVote(id));
         dispatch(setMessage(`You voted: "${votedAnecdote.content}"`)); 
       }
     };

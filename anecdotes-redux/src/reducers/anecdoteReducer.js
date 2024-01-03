@@ -39,3 +39,14 @@ export const createAnecdotes = content => {
     dispatch(createAnecdote(newAnecdote))
   }
 }
+
+export const updateVote = (id) => {
+  return async (dispatch, getState) => {
+    const anecdotes = getState().anecdotes;
+    const anecdoteToVote = anecdotes.find((anecdote) => anecdote.id === id);
+    const updatedVotes = anecdoteToVote.votes + 1; 
+    await anecdoteService.updateVote(id, updatedVotes, anecdoteToVote.content); 
+    dispatch(voteAction(id)); 
+  };
+};
+
