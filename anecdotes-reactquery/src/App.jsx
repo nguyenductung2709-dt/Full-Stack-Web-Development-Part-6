@@ -13,7 +13,6 @@ const App = () => {
     console.log('vote')
   }
 
-
   const result = useQuery({
     queryKey: ['anecdotes'],
     queryFn: getAnecdotes,
@@ -29,7 +28,7 @@ const App = () => {
   if ( result.isLoading ) {
     return <div>loading data...</div>
   }
-
+  
   const anecdotes = result.data
 
   return (
