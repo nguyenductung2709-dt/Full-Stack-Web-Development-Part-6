@@ -1,35 +1,38 @@
-import AnecdoteForm from './components/AnecdoteForm'
-import Notification from './components/Notification'
-import { getAnecdotes } from './requests'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-
-
+import AnecdoteForm from './components/AnecdoteForm';
+import Notification from './components/Notification';
+import { getAnecdotes, updateAnecdote } from './requests';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 
 const App = () => {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
+  const updateAnecdoteMutation = useMutation({
+    mutationFn: updateAnecdote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['anecdotes'] });
+    },
+  });
 
   const handleVote = (anecdote) => {
-    console.log('vote')
-  }
-
+    updateAnecdoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 });
+  };
+  
   const result = useQuery({
     queryKey: ['anecdotes'],
     queryFn: getAnecdotes,
     refetchOnWindowFocus: false,
-    retry: false
-  })
-  console.log(JSON.parse(JSON.stringify(result)))
+    retry: false,
+  });
 
   if (result.isError) {
-    return <span>anecdote service not available due to problems in server</span>
+    return <span>Anecdote service not available due to problems in server</span>;
   }
 
-  if ( result.isLoading ) {
-    return <div>loading data...</div>
+  if (result.isLoading) {
+    return <div>Loading data...</div>;
   }
   
-  const anecdotes = result.data
+  const anecdotes = result.data;
 
   return (
     <div>
@@ -38,19 +41,17 @@ const App = () => {
       <Notification />
       <AnecdoteForm />
     
-      {anecdotes.map(anecdote =>
+      {anecdotes.map(anecdote => (
         <div key={anecdote.id}>
-          <div>
-            {anecdote.content}
-          </div>
+          <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
             <button onClick={() => handleVote(anecdote)}>vote</button>
           </div>
         </div>
-      )}
+      ))}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
